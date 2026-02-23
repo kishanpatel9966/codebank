@@ -1,0 +1,129 @@
+
+using System; 
+using System.Collections.Generic; 
+using System.ComponentModel; 
+using System.Data; 
+using System.Drawing; 
+using System.Linq; 
+using System.Text; 
+using System.Windows.Forms; 
+using System.Data.SqlClient; 
+ 
+ 
+namespace Prg33 
+{ 
+    public partial class Form1 : Form 
+    { 
+        SqlConnection con = new SqlConnection( 
+    "Data Source=.\\SQLEXPRESS;Initial Catalog=EmpDb;Integrated 
+Security=True" 
+); 
+        public Form1() 
+        { 
+            InitializeComponent(); 
+ 
+        } 
+ 
+        private void Form1_Load(object sender, EventArgs e) 
+        { 
+ 
+        } 
+ 
+        private void btnInsert_Click(object sender, EventArgs e) 
+        { 
+            try 
+    { 
+              con.Open(); 
+        SqlCommand cmd = new SqlCommand( 
+            "INSERT INTO EMP_DATA (EMP_ID, EMP_NAME, DOJ, GENDER, 
+ADDRESS, MERITAL_STATUS, MOBILE) " + 
+            "VALUES (@id, @name, @doj, @gender, @address, @status, 
+@mobile)", con); 
+ 
+        cmd.Parameters.AddWithValue("@id", txtEmpId.Text); 
+        cmd.Parameters.AddWithValue("@name", txtEmpName.Text); 
+        cmd.Parameters.AddWithValue("@doj", txtDOJ.Text); 
+        cmd.Parameters.AddWithValue("@gender", txtGender.Text); 
+        cmd.Parameters.AddWithValue("@address", txtAddress.Text); 
+        cmd.Parameters.AddWithValue("@status", txtStatus.Text); 
+        cmd.Parameters.AddWithValue("@mobile", txtMobile.Text); 
+ 
+        cmd.ExecuteNonQuery(); 
+        MessageBox.Show("Record Inserted Successfully!"); 
+    } 
+    catch (Exception ex) 
+    { 
+        MessageBox.Show(ex.Message); 
+    } 
+    finally 
+    { 
+        con.Close(); 
+    } 
+         
+        } 
+ 
+        private void btnView_Click(object sender, EventArgs e) 
+        { 
+            SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM 
+EMP_DATA", con); 
+    DataTable dt = new DataTable(); 
+    da.Fill(dt); 
+    dataGridView1.DataSource = dt; 
+        } 
+ 
+        private void btnUpdate_Click(object sender, EventArgs e) 
+        { 
+             try 
+    { 
+        con.Open(); 
+        SqlCommand cmd = new SqlCommand( 
+            "UPDATE EMP_DATA SET EMP_NAME=@name, DOJ=@doj, 
+GENDER=@gender, " + 
+            "ADDRESS=@address, MERITAL_STATUS=@status, 
+MOBILE=@mobile WHERE EMP_ID=@id", con); 
+ 
+        cmd.Parameters.AddWithValue("@id", txtEmpId.Text); 
+        cmd.Parameters.AddWithValue("@name", txtEmpName.Text); 
+        cmd.Parameters.AddWithValue("@doj", txtDOJ.Text); 
+        cmd.Parameters.AddWithValue("@gender", txtGender.Text); 
+        cmd.Parameters.AddWithValue("@address", txtAddress.Text); 
+        cmd.Parameters.AddWithValue("@status", txtStatus.Text); 
+        cmd.Parameters.AddWithValue("@mobile", txtMobile.Text); 
+ 
+        cmd.ExecuteNonQuery(); 
+        MessageBox.Show("Record Updated Successfully!"); 
+    } 
+    catch (Exception ex) 
+    { 
+        MessageBox.Show(ex.Message); 
+    } 
+    finally 
+    { 
+        con.Close(); 
+    } 
+ 
+        } 
+ 
+        private void btnDelete_Click(object sender, EventArgs e) 
+        { 
+            try 
+    { 
+        con.Open(); 
+        SqlCommand cmd = new SqlCommand("DELETE FROM EMP_DATA 
+WHERE EMP_ID=@id", con); 
+        cmd.Parameters.AddWithValue("@id", txtEmpId.Text); 
+ 
+        cmd.ExecuteNonQuery(); 
+        MessageBox.Show("Record Deleted Successfully!"); 
+    } 
+    catch (Exception ex) 
+    { 
+        MessageBox.Show(ex.Message); 
+    } 
+    finally 
+    { 
+        con.Close(); 
+    } 
+        } 
+    } 
+} 
