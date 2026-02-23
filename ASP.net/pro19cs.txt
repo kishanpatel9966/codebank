@@ -1,0 +1,79 @@
+
+EmployeeCRUD.cs.aspx
+using System;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace PrgCRUD
+{
+public partial class EmployeeCRUD : System.Web.UI.Page
+
+{
+string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+
+protected void Insert_Click(object sender, EventArgs e)
+{
+SqlConnection con = new SqlConnection(cs);
+SqlCommand cmd = new SqlCommand(
+"INSERT INTO Employees(Name,City,Salary) VALUES(@n,@c,@s)", con);
+
+cmd.Parameters.AddWithValue("@n", txtName.Text);
+cmd.Parameters.AddWithValue("@c", txtCity.Text);
+cmd.Parameters.AddWithValue("@s", txtSalary.Text);
+
+con.Open();
+cmd.ExecuteNonQuery();
+con.Close();
+
+lblMsg.Text = "Inserted Successfully";
+}
+
+protected void Update_Click(object sender, EventArgs e)
+{
+SqlConnection con = new SqlConnection(cs);
+SqlCommand cmd = new SqlCommand(
+"UPDATE Employees SET Name=@n,City=@c,Salary=@s WHERE Id=@i", con);
+
+cmd.Parameters.AddWithValue("@i", txtId.Text);
+cmd.Parameters.AddWithValue("@n", txtName.Text);
+cmd.Parameters.AddWithValue("@c", txtCity.Text);
+
+cmd.Parameters.AddWithValue("@s", txtSalary.Text);
+
+con.Open();
+cmd.ExecuteNonQuery();
+con.Close();
+
+lblMsg.Text = "Updated Successfully";
+}
+
+protected void Delete_Click(object sender, EventArgs e)
+{
+SqlConnection con = new SqlConnection(cs);
+SqlCommand cmd = new SqlCommand(
+"DELETE FROM Employees WHERE Id=@i", con);
+
+cmd.Parameters.AddWithValue("@i", txtId.Text);
+
+con.Open();
+cmd.ExecuteNonQuery();
+con.Close();
+
+lblMsg.Text = "Deleted Successfully";
+}
+
+protected void Show_Click(object sender, EventArgs e)
+{
+SqlConnection con = new SqlConnection(cs);
+SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM Employees", con);
+DataTable dt = new DataTable();
+
+da.Fill(dt);
+
+GridView1.DataSource = dt;
+GridView1.DataBind();
+}
+}
+}
+Output:

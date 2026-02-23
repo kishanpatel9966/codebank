@@ -1,0 +1,49 @@
+19. Develop a web page to establish a connection to a SQL Server database and perform basic
+CRUD operations from an ASP.NET Web Form using ADO.NET.
+
+EmployeeCRUD.aspx
+<%@ Page Language="C#" AutoEventWireup="true"
+CodeBehind="EmployeeCRUD.aspx.cs"
+Inherits="PrgCRUD.EmployeeCRUD" %>
+
+<!DOCTYPE html>
+<html>
+<head id="Head1" runat="server">
+<title>Employee CRUD</title>
+<style>
+body { font-family: Arial; background:#f2f2f2; }
+.box { width:650px; margin:40px auto; background:#Ưf; padding:20px; border-radius:10px; }
+input { width:95%; padding:8px; margin:5px 0; }
+button { padding:8px 12px; }
+</style>
+</head>
+<body>
+<form id="Form1" runat="server">
+<div class="box">
+<h2>Employee CRUD using ADO.NET</h2>
+
+<asp:Label ID="lblMsg" runat="server"></asp:Label><br />
+
+ID:
+<asp:TextBox ID="txtId" runat="server"></asp:TextBox>
+
+Name:
+<asp:TextBox ID="txtName" runat="server"></asp:TextBox>
+
+City:
+<asp:TextBox ID="txtCity" runat="server"></asp:TextBox>
+
+Salary:
+<asp:TextBox ID="txtSalary" runat="server"></asp:TextBox><br /><br />
+
+<asp:Button ID="Button1" Text="Insert" runat="server" OnClick="Insert_Click" />
+<asp:Button ID="Button2" Text="Update" runat="server" OnClick="Update_Click" />
+<asp:Button ID="Button3" Text="Delete" runat="server" OnClick="Delete_Click" />
+<asp:Button ID="Button4" Text="Show All" runat="server" OnClick="Show_Click" />
+
+<br /><br />
+<asp:GridView ID="GridView1" runat="server"></asp:GridView>
+</div>
+</form>
+</body>
+</html>
