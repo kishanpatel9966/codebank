@@ -1,0 +1,92 @@
+Login.aspx.cs
+using System;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.Web;
+
+namespace Program20
+{
+public partial class Login : System.Web.UI.Page
+{
+string cs = ConfigurationManager.ConnectionStrings["DBCS"].ConnectionString;
+
+protected void Page_Load(object sender, EventArgs e)
+
+{
+txtUser.Attributes["placeholder"] = "Username";
+txtPass.Attributes["placeholder"] = "Password";
+
+// Auto login using cookie
+if (!IsPostBack && Request.Cookies["UserCookie"] != null)
+{
+txtUser.Text = Request.Cookies["UserCookie"]["Username"];
+}
+}
+
+protected void btnLogin_Click(object sender, EventArgs e)
+{
+using (SqlConnection con = new SqlConnection(cs))
+{
+string q = "SELECT COUNT(*) FROM Users WHERE Username=@u AND Password=@p";
+SqlCommand cmd = new SqlCommand(q, con);
+cmd.Parameters.AddWithValue("@u", txtUser.Text.Trim());
+cmd.Parameters.AddWithValue("@p", txtPass.Text.Trim());
+
+con.Open();
+int count = (int)cmd.ExecuteScalar();
+
+if (count == 1)
+{
+// Session
+Session["User"] = txtUser.Text.Trim();
+
+// Cookie (optional)
+
+if (chkRemember.Checked)
+{
+HttpCookie c = new HttpCookie("UserCookie");
+c["Username"] = txtUser.Text.Trim();
+c.Expires = DateTime.Now.AddDays(7);
+Response.Cookies.Add(c);
+}
+
+Response.Redirect("Home.aspx");
+}
+else
+{
+lblMsg.Text = "Invalid Username or Password";
+}
+}
+}
+}
+}
+/////////////////////////////// Home cs /////////////////////////////////////
+using System;
+
+namespace Program20
+{
+public partial class Home : System.Web.UI.Page
+{
+protected void Page_Load(object sender, EventArgs e)
+{
+if (Session["User"] == null)
+Response.Redirect("Login.aspx");
+}
+
+protected void btnLogout_Click(object sender, EventArgs e)
+{
+Session.Abandon();
+
+// clear cookie also if you are using "Remember Me"
+if (Request.Cookies["UserCookie"] != null)
+{
+var c = new System.Web.HttpCookie("UserCookie");
+
+c.Expires = DateTime.Now.AddDays(-1);
+Response.Cookies.Add(c);
+}
+
+Response.Redirect("Login.aspx");
+}
+}
+}

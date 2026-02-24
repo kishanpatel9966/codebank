@@ -1,0 +1,47 @@
+20. Write a program to design ASP.net Login Page for website with session and cookies.
+Connect page with database to authenticate user
+Login.aspx
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Login.aspx.cs"
+Inherits="Program20.Login" %>
+
+<!DOCTYPE html>
+<html>
+<head id="Head1" runat="server">
+<title>Login</title>
+
+</head>
+<body>
+<form id="form1" runat="server">
+<h2>Login</h2>
+
+<asp:Label ID="lblMsg" runat="server" ForeColor="Red"></asp:Label><br/><br/>
+
+<asp:TextBox ID="txtUser" runat="server"></asp:TextBox><br/><br/>
+<asp:TextBox ID="txtPass" runat="server" TextMode="Password"></asp:TextBox><br/><br/>
+
+<asp:CheckBox ID="chkRemember" runat="server" Text="Remember Me" /><br/><br/>
+
+<asp:Button ID="btnLogin" runat="server" Text="Login" OnClick="btnLogin_Click" />
+</form>
+</body>
+</html>
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+Home.aspx
+<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Home.aspx.cs" Inherits="Home" %>
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+<title>Home</title>
+</head>
+<body style="font-family:Arial;">
+<form id="form1" runat="server">
+<h2>Welcome to Home Page</h2>
+
+<asp:Label ID="lblUser" runat="server" Font-Bold="true"></asp:Label>
+<br /><br />
+
+<asp:Button ID="btnLogout" runat="server" Text="Logout" OnClick="btnLogout_Click" />
+</form>
+</body>
+</html>
